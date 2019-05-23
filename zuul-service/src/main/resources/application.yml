@@ -1,0 +1,38 @@
+#Zuul的作用：1.限流  2.路由 3.身份认证与安全  4.审查与监控  5.过滤器
+
+server:
+  port: 10010
+#zuul:    写死
+#  routes:
+#    user:
+#      path: /user-service/user/**
+#      url: http://127.0.0.1:8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+#面向服务的路由   内部实现负载均衡
+zuul:
+  routes:
+#    user-service:
+#      path: /user-service/**
+#      serviceId: user-service
+#      strip-prefix: false 不去除前缀,即user-service
+  #上边简化版 但会去掉前缀
+    user-service: /user-service/**  #zuul默认为每一个拉取的为服务创建了此映射关系
+  ignored-services:
+    - consumer-service   禁用默认的以上简化版服务配置
+spring:
+  application:
+    name: gateway
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000 #配置超时时长
+ribbon:
+  ConnectionTimeout: 500  #这里有个算法 AbstractRibbonCommand  具体超时时长= 这两配置*重试次数
+  ReadTimeOut: 1000       #具体超时时长  不能超过hystrix超时时长
+  MaxAutoRetriesNextServer: 0 #不重试

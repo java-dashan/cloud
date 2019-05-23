@@ -1,0 +1,22 @@
+server:
+  port: 10086
+
+# Eureka作为注册中心,同zookper一样，需要搭建集群，否则Eureka挂了整个服务都挂了
+# Eureka既是服务端也是客户端
+# 下面为了让其不报错,自己注册自己,相当于搭建集群
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka #覆盖默认注册地址
+    #是否向eureka注册
+    #注册后eureka会以双层map保存  1,服务名称 -实例id   2.实例id - 服务端口等
+    fetch-registry: false
+  #该配置可解决联网ip地址问题,即eureka首页展示的ip不一样,但实际调用的ip是此ip,加在服务提供方即可
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1   # 配置实例地址
+
+# 服务的名称  必填  eureka以此名称作为服务拉取推送
+spring:
+  application:
+    name: eureka-server

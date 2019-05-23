@@ -1,0 +1,59 @@
+server:
+  port: 8088
+spring:
+  application:
+    name: consumer-service
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10086/eureka
+    registry-fetch-interval-seconds: 30  #消费方拉取服务时间
+    fetch-registry: true                 #是否拉取
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+#全局熔断超时时间配置
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+    user-service:  #表示只针对这个服务    也可以将其换成方法名针对方法
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+    #熔断器最核心的功能:    断路器(即根据响应百分比(默认50%)断开该服务的连接,计时5秒，再半开，
+    #                      如此循环，知道恢复正常(状态：1打开 2关闭 3半开)) 一般做不调整，默认即可
+
+#失效剔除(剔除挂了的服务)
+#自我保护(设置百分比,因为心跳机制可能由于网络延迟未达到理想状态,此时暂停失效剔除)
+#  server:
+#    enable-self-preservation: false #关闭自我保护(缺省为打开)
+#设置服务端负载均衡算法
+# user-service:
+# ribbon:
+# NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule #规则决定负载均衡算法
+
+
+  #-Dserver.port=8080 配置JVM参数  不用再改application.yml  会直接覆盖
+
+#Feign中负载均衡配置和熔断开启
+ribbon:
+  ConnectionTimeOut: 500
+  ReadTimeOut: 2000
+feign:
+  hystrix:
+    enabled: true
+  #文件上传，下载时可以开启  请求压缩
+  compression:
+    request:
+      enabled: true  #开启请求压缩
+      mime-types: text/html,application/xml,application/json #设置压缩的数据类型
+      min-request-size: 2048    #设置触发压缩的大小下限
+    response:
+      enabled: true  #响应压缩
+
+

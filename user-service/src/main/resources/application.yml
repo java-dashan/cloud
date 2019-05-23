@@ -1,0 +1,24 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    password: dashan
+    url: jdbc.mysql://localhost:3306/leyou
+    username: root
+  #服务名称
+  application:
+    name: user-serice
+mybatis:
+  type-aliases-package: user.pojo
+
+#注册方都是这么写
+eureka:
+  client:
+    service-url:
+    defaultZone: http://127.0.0.1:10086/eureka
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1   # 配置实例地址
+    lease-renewal-interval-in-seconds: 30  #最小心跳时长
+    lease-expiration-duration-in-seconds: 90 #最小过期时长
+#-Dserver.port=8080 配置JVM参数  不用再改application.yml  会直接覆盖
