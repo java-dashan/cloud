@@ -1,0 +1,56 @@
+# study
+person:
+  name: 张三
+  age: 28
+user:
+  tel: ${random.uuid}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+spring:
+  main:
+    lazy-initialization: true
+  application:
+    name: test
+  profiles:
+    active: res
+  redis:
+    host: 47.107.176.105
+
+server:
+  port: 111
+#  servlet: 基路径
+#    context-path: /servlet
+#logging:
+#  level:
+#    root: debug
+---
+server:
+  port: 112
+spring:
+  profiles: dev
+---
+server:
+  port: 113
+spring:
+  profiles: prod
+---
+spring:
+  profiles: res
+server:
+  port: 114

@@ -12,6 +12,8 @@
         <module>consumer-service</module>
         <module>eureka-service</module>
         <module>zuul-service</module>
+        <module>cart-service</module>
+        <module>test</module>
     </modules>
     <!-- 打包方式   -->
     <packaging>pom</packaging>
